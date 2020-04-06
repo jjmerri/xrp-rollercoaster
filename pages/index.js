@@ -55,7 +55,7 @@ const calculateRotation = (histData) => {
 export async function getServerSideProps(context) {
   const histData = await axios
     .get(
-      "https://min-api.cryptocompare.com/data/v2/histohour?fsym=XRP&tsym=USD&limit=12",
+      "https://min-api.cryptocompare.com/data/v2/histohour?fsym=XRP&tsym=USD&limit=6",
       {
         headers: {
           authorization: `Apikey ${serverRuntimeConfig.cryptoCompareApiKey}`,
