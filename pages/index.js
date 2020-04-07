@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import axios from "axios";
 import CryptoChart from "../components/CryptoChart";
+import ReactGA from "react-ga";
 
 const Container = styled.div`
   padding-right: 15px;
@@ -68,6 +69,9 @@ const Home = ({ histData }) => {
     document.body.style.backgroundAttachment = "fixed";
     document.body.style.backgroundSize = "cover";
     document.body.style.backgroundPosition = "center";
+
+    ReactGA.initialize("UA-163121450-1");
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }, []);
 
   return (
