@@ -6,6 +6,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 
 const getChartData = (histData) => {
@@ -20,29 +21,29 @@ const getChartData = (histData) => {
 
 const CryptoChart = ({ histData }) => {
   return (
-    <LineChart
-      id="cryptoLineChart"
-      width={700}
-      height={300}
-      data={getChartData(histData)}
-      margin={{
-        top: 5,
-        right: 30,
-        left: 20,
-        bottom: 5,
-      }}
-    >
-      <CartesianGrid />
-      <XAxis dataKey="name" />
-      <YAxis
-        domain={[
-          (dataMin) => (dataMin * 0.95).toFixed(4),
-          (dataMax) => (dataMax * 1.05).toFixed(4),
-        ]}
-      />
-      <Tooltip />
-      <Line type="monotone" dataKey="price" />
-    </LineChart>
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart
+        id="cryptoLineChart"
+        data={getChartData(histData)}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid />
+        <XAxis dataKey="name" />
+        <YAxis
+          domain={[
+            (dataMin) => (dataMin * 0.95).toFixed(4),
+            (dataMax) => (dataMax * 1.05).toFixed(4),
+          ]}
+        />
+        <Tooltip />
+        <Line type="monotone" dataKey="price" />
+      </LineChart>
+    </ResponsiveContainer>
   );
 };
 

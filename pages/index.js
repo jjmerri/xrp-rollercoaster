@@ -7,19 +7,17 @@ import CryptoChart from "../components/CryptoChart";
 
 const { serverRuntimeConfig } = getConfig();
 
-const Background = styled.div`
-  background-image: url("background2.jpg");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center;
+const Container = styled.div`
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-right: auto;
+  padding-left: auto;
+  padding-top: 2rem;
+  text-align: center;
 `;
 
-const Container = styled.div`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+const ImageContainer = styled(Container)`
+  padding-bottom: 3rem;
 `;
 
 const RotatedImage = styled.img`
@@ -29,9 +27,6 @@ const RotatedImage = styled.img`
   -o-transform: rotate(${(props) => props.rotation}deg);
   transform: rotate(${(props) => props.rotation}deg);
   height: 300px;
-  margin-top: 3rem;
-  margin-bottom: 2.5rem;
-  margin-left: 15rem;
 `;
 
 const calculateRotation = (histData) => {
@@ -71,26 +66,33 @@ export async function getServerSideProps(context) {
 const Home = ({ histData }) => {
   useEffect(() => {
     document.body.style.margin = 0;
+    document.body.style.backgroundImage = 'url("background2.jpg")';
+    document.body.style.backgroundRepeat = "no-repeat";
+    document.body.style.backgroundAttachment = "fixed";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
   }, []);
 
   return (
-    <Background>
-      <Container>
-        <Head>
-          <title>XRP Rollercoaster</title>
-          <link rel="icon" href="/favicon.png" />
-        </Head>
+    <Container>
+      <Head>
+        <title>XRP Rollercoaster</title>
+        <link rel="icon" href="/favicon.png" />
+      </Head>
 
-        <main>
+      <main>
+        <ImageContainer>
           <RotatedImage
             src="/xrp-rollercoaster.gif"
             alt="xrp rollercoaster"
             rotation={calculateRotation(histData)}
           />
+        </ImageContainer>
+        <Container>
           <CryptoChart histData={histData} />
-        </main>
-      </Container>
-    </Background>
+        </Container>
+      </main>
+    </Container>
   );
 };
 
