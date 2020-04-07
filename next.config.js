@@ -1,5 +1,5 @@
 module.exports = {
   serverRuntimeConfig: {
-    cryptoCompareApiKey: "",
+    cryptoCompareApiKey: "@cryptocompare-api-key",
   },
 };
