@@ -22,14 +22,23 @@ const CryptoChart = ({ histData }) => {
   return (
     <LineChart
       id="cryptoLineChart"
-      width={500}
+      width={700}
       height={300}
       data={getChartData(histData)}
+      margin={{
+        top: 5,
+        right: 30,
+        left: 20,
+        bottom: 5,
+      }}
     >
       <CartesianGrid />
       <XAxis dataKey="name" />
       <YAxis
-        domain={[(dataMin) => dataMin * 0.95, (dataMax) => dataMax * 1.05]}
+        domain={[
+          (dataMin) => (dataMin * 0.95).toFixed(4),
+          (dataMax) => (dataMax * 1.05).toFixed(4),
+        ]}
       />
       <Tooltip />
       <Line type="monotone" dataKey="price" />

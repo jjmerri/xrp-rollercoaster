@@ -31,7 +31,7 @@ const RotatedImage = styled.img`
   height: 300px;
   margin-top: 3rem;
   margin-bottom: 2.5rem;
-  margin-left: 8rem;
+  margin-left: 15rem;
 `;
 
 const calculateRotation = (histData) => {
@@ -55,7 +55,7 @@ const calculateRotation = (histData) => {
 export async function getServerSideProps(context) {
   const histData = await axios
     .get(
-      "https://min-api.cryptocompare.com/data/v2/histohour?fsym=XRP&tsym=USD&limit=6",
+      "https://min-api.cryptocompare.com/data/v2/histohour?fsym=XRP&tsym=USD&limit=11",
       {
         headers: {
           authorization: `Apikey ${serverRuntimeConfig.cryptoCompareApiKey}`,
