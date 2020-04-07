@@ -1,11 +1,8 @@
 import Head from "next/head";
 import styled from "styled-components";
 import { useEffect } from "react";
-import getConfig from "next/config";
 import axios from "axios";
 import CryptoChart from "../components/CryptoChart";
-
-const { serverRuntimeConfig } = getConfig();
 
 const Container = styled.div`
   padding-right: 15px;
@@ -53,7 +50,7 @@ export async function getServerSideProps(context) {
       "https://min-api.cryptocompare.com/data/v2/histohour?fsym=XRP&tsym=USD&limit=11",
       {
         headers: {
-          authorization: `Apikey ${serverRuntimeConfig.cryptoCompareApiKey}`,
+          authorization: `Apikey ${process.env.cryptoCompareApiKey}`,
         },
       }
     )
