@@ -79,6 +79,11 @@ const Home = ({ histData }) => {
       <Head>
         <title>XRP Rollercoaster</title>
         <link rel="icon" href="/favicon.png" />
+        <meta
+          name="monetization"
+          content="$reddit.xrptipbot.com/BoyAndHisBlob"
+        />
+        >
       </Head>
 
       <main>
