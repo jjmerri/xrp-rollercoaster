@@ -42,13 +42,13 @@ const calculateRotation = (histData) => {
     rotation = Math.max(percentChange / maxChange, -1) * 90;
   }
 
-  return 90 - rotation;
+  return rotation * -1;
 };
 
 export async function getServerSideProps(context) {
   const histData = await axios
     .get(
-      "https://min-api.cryptocompare.com/data/v2/histohour?fsym=XRP&tsym=USD&limit=11",
+      "https://min-api.cryptocompare.com/data/v2/histohour?fsym=XRP&tsym=USD&limit=12",
       {
         headers: {
           authorization: `Apikey ${process.env.cryptoCompareApiKey}`,
@@ -64,7 +64,7 @@ export async function getServerSideProps(context) {
 const Home = ({ histData }) => {
   useEffect(() => {
     document.body.style.margin = 0;
-    document.body.style.backgroundImage = 'url("background2.jpg")';
+    document.body.style.backgroundImage = 'url("background.jpg")';
     document.body.style.backgroundRepeat = "no-repeat";
     document.body.style.backgroundAttachment = "fixed";
     document.body.style.backgroundSize = "cover";

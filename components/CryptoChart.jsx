@@ -39,8 +39,9 @@ const CryptoChart = ({ histData }) => {
             (dataMin) => (dataMin * 0.95).toFixed(4),
             (dataMax) => (dataMax * 1.05).toFixed(4),
           ]}
+          tickFormatter={(tick) => `$${tick.toFixed(4)}`}
         />
-        <Tooltip />
+        <Tooltip formatter={(value) => [`$${value}`, ""]} separator={""} />
         <Line type="monotone" dataKey="price" />
       </LineChart>
     </ResponsiveContainer>
