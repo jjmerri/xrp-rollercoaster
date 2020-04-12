@@ -15,11 +15,6 @@ const Container = styled.div`
   text-align: center;
 `;
 
-const ChartControlsContainer = styled.div`
-  padding-top: 2rem;
-  text-align: left;
-`;
-
 const ImageContainer = styled(Container)`
   padding-bottom: 3rem;
 `;
@@ -60,9 +55,6 @@ export async function getServerSideProps(context) {
 
 const Home = ({ initialHistData }) => {
   const [histData, setHistData] = useState(initialHistData);
-  const [currency, setCurrency] = useState(CurrencyCodes.USD);
-  const [timeUnits, setTimeUnits] = useState(TimeUnits.HOURS);
-  const [initialLoad, setInitialLoad] = useState(true);
 
   useEffect(() => {
     document.body.style.margin = 0;
@@ -76,24 +68,8 @@ const Home = ({ initialHistData }) => {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }, []);
 
-  useEffect(() => {
-    //prevent recalling API on initial render
-    if (!initialLoad) {
-      updateHistoricalData();
-    } else {
-      setInitialLoad(false);
-    }
-  }, [currency, timeUnits]);
-
-  const updateHistoricalData = async () => {
+  const updateHistoricalData = async (currency, timeUnits) => {
     setHistData(await cryptoHistory('XRP', currency, timeUnits));
-  };
-
-  const handleCurrencyChange = async (e) => {
-    setCurrency(e.target.value);
-  };
-  const handleTimeUnitsChange = async (e) => {
-    setTimeUnits(e.target.value);
   };
 
   return (
@@ -108,30 +84,8 @@ const Home = ({ initialHistData }) => {
         <ImageContainer>
           <RotatedImage src='/xrp-rollercoaster.gif' alt='xrp rollercoaster' rotation={calculateRotation(histData)} />
         </ImageContainer>
-        <ChartControlsContainer>
-          <select
-            onChange={handleCurrencyChange}
-            value={currency}
-            className='select-css'
-            style={{ marginLeft: '7rem' }}>
-            {Object.keys(CurrencyCodes).map((code) => (
-              <option key={code} value={code}>
-                {code}
-              </option>
-            ))}
-          </select>
-          <select
-            onChange={handleTimeUnitsChange}
-            value={timeUnits}
-            className='select-css'
-            style={{ marginLeft: '2rem' }}>
-            <option value={TimeUnits.MINUTES}>Mins</option>
-            <option value={TimeUnits.HOURS}>Hours</option>
-            <option value={TimeUnits.DAYS}>Days</option>
-          </select>
-        </ChartControlsContainer>
         <Container>
-          <CryptoChart currency={currency} histData={histData} timeUnits={timeUnits} />
+          <CryptoChart histData={histData} updateData={updateHistoricalData} />
         </Container>
       </main>
     </Container>

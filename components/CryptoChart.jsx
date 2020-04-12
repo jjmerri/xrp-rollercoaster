@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label } from 'recharts';
 import { TimeUnits } from '../consts/TimeUnits';
+import { CurrencyCodes } from '../consts/CurrencyCodes';
+
+const ChartControlsContainer = styled.div`
+  padding-bottom: 2rem;
+  text-align: left;
+`;
 
 const currencySymbols = { USD: '$', BTC: '₿', AUD: '$', CAD: '$', EUR: '€', GBP: '£' };
 
@@ -44,9 +51,11 @@ const calculatePrecision = (histData) => {
   return Math.max(precision, 4);
 };
 
-const CryptoChart = ({ histData, currency, timeUnits }) => {
+const CryptoChart = ({ histData, updateData }) => {
   const [precision, setPrecision] = useState(4);
   const [currencySymbol, setCurrencySymbol] = useState('$');
+  const [currency, setCurrency] = useState(CurrencyCodes.USD);
+  const [timeUnits, setTimeUnits] = useState(TimeUnits.HOURS);
 
   useEffect(() => {
     setPrecision(calculatePrecision(histData));
@@ -56,27 +65,65 @@ const CryptoChart = ({ histData, currency, timeUnits }) => {
     setCurrencySymbol(currencySymbols[currency]);
   }, [currency]);
 
+  useEffect(() => {
+    updateData(currency, timeUnits);
+  }, [currency, timeUnits]);
+
+  const handleCurrencyChange = async (e) => {
+    setCurrency(e.target.value);
+  };
+  const handleTimeUnitsChange = async (e) => {
+    setTimeUnits(e.target.value);
+  };
+
   return (
-    <ResponsiveContainer width='100%' height={300}>
-      <LineChart
-        id='cryptoLineChart'
-        data={getChartData(histData, timeUnits)}
-        margin={{
-          right: 10,
-          left: 7 + 8 * precision,
-          bottom: 40,
-        }}>
-        <CartesianGrid />
-        <XAxis dataKey='name' label={<Label value={timeUnits} position='bottom' fill='gray' />} />
-        <YAxis
-          domain={[(dataMin) => (dataMin * 0.95).toFixed(precision), (dataMax) => (dataMax * 1.05).toFixed(precision)]}
-          tickFormatter={(tick) => `${currencySymbol}${tick.toFixed(precision)}`}
-          label={<Label value={currency} angle={-90} position='left' offset={8 * (precision - 1)} fill='gray' />}
-        />
-        <Tooltip formatter={(value) => [`${currencySymbol}${value}`, '']} separator={''} />
-        <Line type='monotone' dataKey='price' />
-      </LineChart>
-    </ResponsiveContainer>
+    <>
+      <ChartControlsContainer>
+        <select
+          onChange={handleCurrencyChange}
+          value={currency}
+          className='select-css'
+          style={{ marginLeft: `${4 + 0.5 * precision}rem` }}>
+          {Object.keys(CurrencyCodes).map((code) => (
+            <option key={code} value={code}>
+              {code}
+            </option>
+          ))}
+        </select>
+        <select
+          onChange={handleTimeUnitsChange}
+          value={timeUnits}
+          className='select-css'
+          style={{ marginLeft: '2rem' }}>
+          <option value={TimeUnits.MINUTES}>Mins</option>
+          <option value={TimeUnits.HOURS}>Hours</option>
+          <option value={TimeUnits.DAYS}>Days</option>
+        </select>
+      </ChartControlsContainer>
+      <ResponsiveContainer width='100%' height={300}>
+        <LineChart
+          id='cryptoLineChart'
+          data={getChartData(histData, timeUnits)}
+          margin={{
+            right: 10,
+            left: 7 + 8 * precision,
+            bottom: 40,
+          }}>
+          <CartesianGrid />
+          <XAxis dataKey='name' label={<Label value={timeUnits} position='bottom' fill='gray' />} />
+          <YAxis
+            domain={[
+              (dataMin) => (dataMin * 0.95).toFixed(precision),
+              (dataMax) => (dataMax * 1.05).toFixed(precision),
+            ]}
+            tickFormatter={(tick) => `${currencySymbol}${tick.toFixed(precision)}`}
+            label={<Label value={currency} angle={-90} position='left' offset={8 * (precision - 1)} fill='gray' />}
+          />
+          <Tooltip formatter={(value) => [`${currencySymbol}${value}`, '']} separator={''} />
+          <Line type='monotone' dataKey='price' />
+        </LineChart>
+      </ResponsiveContainer>
+    </>
   );
 };
 
