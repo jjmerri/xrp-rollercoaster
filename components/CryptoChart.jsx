@@ -56,6 +56,7 @@ const CryptoChart = ({ histData, updateData }) => {
   const [currencySymbol, setCurrencySymbol] = useState('$');
   const [currency, setCurrency] = useState(CurrencyCodes.USD);
   const [timeUnits, setTimeUnits] = useState(TimeUnits.HOURS);
+  const [initialLoad, setInitialLoad] = useState(true);
 
   useEffect(() => {
     setPrecision(calculatePrecision(histData));
@@ -66,7 +67,11 @@ const CryptoChart = ({ histData, updateData }) => {
   }, [currency]);
 
   useEffect(() => {
-    updateData(currency, timeUnits);
+    if (!initialLoad) {
+      updateData(currency, timeUnits);
+    } else {
+      setInitialLoad(false);
+    }
   }, [currency, timeUnits]);
 
   const handleCurrencyChange = async (e) => {

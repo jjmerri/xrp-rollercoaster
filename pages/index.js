@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import CryptoChart from '../components/CryptoChart';
 import ReactGA from 'react-ga';
 import { cryptoHistory } from '../services/apiService';
@@ -68,9 +68,9 @@ const Home = ({ initialHistData }) => {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }, []);
 
-  const updateHistoricalData = async (currency, timeUnits) => {
+  const updateHistoricalData = useCallback(async (currency, timeUnits) => {
     setHistData(await cryptoHistory('XRP', currency, timeUnits));
-  };
+  }, []);
 
   return (
     <Container>
