@@ -5,14 +5,19 @@ import CryptoChart from '../components/CryptoChart';
 import ReactGA from 'react-ga';
 import { cryptoHistory } from '../services/apiService';
 import { getHistoricalData } from '../services/cryptoCompareService';
+import { TimeUnits } from '../consts/TimeUnits';
+import { CurrencyCodes } from '../consts/CurrencyCodes';
 
 const Container = styled.div`
   padding-right: 15px;
   padding-left: 15px;
-  padding-right: auto;
-  padding-left: auto;
   padding-top: 2rem;
   text-align: center;
+`;
+
+const ChartControlsContainer = styled.div`
+  padding-top: 2rem;
+  text-align: left;
 `;
 
 const ImageContainer = styled(Container)`
@@ -47,7 +52,7 @@ const calculateRotation = (histData) => {
 };
 
 export async function getServerSideProps(context) {
-  const initialHistData = await getHistoricalData('XRP', 'USD', 12);
+  const initialHistData = await getHistoricalData('XRP', CurrencyCodes.USD, TimeUnits.HOURS);
   return {
     props: { initialHistData },
   };
@@ -55,7 +60,8 @@ export async function getServerSideProps(context) {
 
 const Home = ({ initialHistData }) => {
   const [histData, setHistData] = useState(initialHistData);
-  const [currency, setCurrency] = useState('USD');
+  const [currency, setCurrency] = useState(CurrencyCodes.USD);
+  const [timeUnits, setTimeUnits] = useState(TimeUnits.HOURS);
   const [initialLoad, setInitialLoad] = useState(true);
 
   useEffect(() => {
@@ -77,14 +83,17 @@ const Home = ({ initialHistData }) => {
     } else {
       setInitialLoad(false);
     }
-  }, [currency]);
+  }, [currency, timeUnits]);
 
   const updateHistoricalData = async () => {
-    setHistData(await cryptoHistory('XRP', currency, 12));
+    setHistData(await cryptoHistory('XRP', currency, timeUnits));
   };
 
   const handleCurrencyChange = async (e) => {
     setCurrency(e.target.value);
+  };
+  const handleTimeUnitsChange = async (e) => {
+    setTimeUnits(e.target.value);
   };
 
   return (
@@ -99,16 +108,30 @@ const Home = ({ initialHistData }) => {
         <ImageContainer>
           <RotatedImage src='/xrp-rollercoaster.gif' alt='xrp rollercoaster' rotation={calculateRotation(histData)} />
         </ImageContainer>
-        <select onChange={handleCurrencyChange} value={currency} class='select-css'>
-          <option value='USD'>USD</option>
-          <option value='BTC'>BTC</option>
-          <option value='AUD'>AUD</option>
-          <option value='CAD'>CAD</option>
-          <option value='EUR'>EUR</option>
-          <option value='GBP'>GBP</option>
-        </select>
+        <ChartControlsContainer>
+          <select
+            onChange={handleCurrencyChange}
+            value={currency}
+            className='select-css'
+            style={{ marginLeft: '7rem' }}>
+            {Object.keys(CurrencyCodes).map((code) => (
+              <option key={code} value={code}>
+                {code}
+              </option>
+            ))}
+          </select>
+          <select
+            onChange={handleTimeUnitsChange}
+            value={timeUnits}
+            className='select-css'
+            style={{ marginLeft: '2rem' }}>
+            <option value={TimeUnits.MINUTES}>Mins</option>
+            <option value={TimeUnits.HOURS}>Hours</option>
+            <option value={TimeUnits.DAYS}>Days</option>
+          </select>
+        </ChartControlsContainer>
         <Container>
-          <CryptoChart currency={currency} histData={histData} />
+          <CryptoChart currency={currency} histData={histData} timeUnits={timeUnits} />
         </Container>
       </main>
     </Container>

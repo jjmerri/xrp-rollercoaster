@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label } from 'recharts';
+import { TimeUnits } from '../consts/TimeUnits';
 
-const currencySymbol = { USD: '$', BTC: '₿', AUD: '$', CAD: '$', EUR: '€', GBP: '£' };
+const currencySymbols = { USD: '$', BTC: '₿', AUD: '$', CAD: '$', EUR: '€', GBP: '£' };
 
-const getChartData = (histData) => {
+const getChartData = (histData, timeUnits) => {
+  let formatTime;
+  switch (timeUnits) {
+    case TimeUnits.MINUTES:
+      formatTime = (datetime) => datetime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+      break;
+    case TimeUnits.HOURS:
+      formatTime = (datetime) => datetime.toLocaleString('en-US', { hour: 'numeric', hour12: true });
+      break;
+    case TimeUnits.DAYS:
+      formatTime = (datetime) => datetime.toLocaleString('en-US', { day: '2-digit', month: '2-digit' });
+      break;
+  }
+
   return histData.Data.Data.map((data) => {
-    const datetime = new Date(data.time * 1000);
     return {
-      name: datetime.toLocaleString('en-US', { hour: 'numeric', hour12: true }),
+      name: formatTime(new Date(data.time * 1000)),
       price: data.close,
     };
   });
@@ -31,36 +44,36 @@ const calculatePrecision = (histData) => {
   return Math.max(precision, 4);
 };
 
-const CryptoChart = ({ histData, currency }) => {
+const CryptoChart = ({ histData, currency, timeUnits }) => {
   const [precision, setPrecision] = useState(4);
-  const [symbol, setSymbol] = useState('$');
+  const [currencySymbol, setCurrencySymbol] = useState('$');
 
   useEffect(() => {
     setPrecision(calculatePrecision(histData));
   }, [histData]);
 
   useEffect(() => {
-    setSymbol(currencySymbol[currency]);
+    setCurrencySymbol(currencySymbols[currency]);
   }, [currency]);
 
   return (
     <ResponsiveContainer width='100%' height={300}>
       <LineChart
         id='cryptoLineChart'
-        data={getChartData(histData)}
+        data={getChartData(histData, timeUnits)}
         margin={{
           right: 10,
           left: 7 + 8 * precision,
           bottom: 40,
         }}>
         <CartesianGrid />
-        <XAxis dataKey='name' label={<Label value='HOURS' position='bottom' fill='gray' />} />
+        <XAxis dataKey='name' label={<Label value={timeUnits} position='bottom' fill='gray' />} />
         <YAxis
           domain={[(dataMin) => (dataMin * 0.95).toFixed(precision), (dataMax) => (dataMax * 1.05).toFixed(precision)]}
-          tickFormatter={(tick) => `${symbol}${tick.toFixed(precision)}`}
+          tickFormatter={(tick) => `${currencySymbol}${tick.toFixed(precision)}`}
           label={<Label value={currency} angle={-90} position='left' offset={8 * (precision - 1)} fill='gray' />}
         />
-        <Tooltip formatter={(value) => [`${symbol}${value}`, '']} separator={''} />
+        <Tooltip formatter={(value) => [`${currencySymbol}${value}`, '']} separator={''} />
         <Line type='monotone' dataKey='price' />
       </LineChart>
     </ResponsiveContainer>
