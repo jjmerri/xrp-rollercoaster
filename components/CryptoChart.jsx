@@ -115,7 +115,10 @@ const CryptoChart = ({ histData, updateData }) => {
             bottom: 40,
           }}>
           <CartesianGrid />
-          <XAxis dataKey='name' label={<Label value={timeUnits} position='bottom' fill='gray' />} />
+          <XAxis
+            dataKey='name'
+            label={<Label value={`LAST ${histData.Data.Data.length - 1} ${timeUnits}`} position='bottom' fill='gray' />}
+          />
           <YAxis
             domain={[
               (dataMin) => (dataMin * 0.95).toFixed(precision),
