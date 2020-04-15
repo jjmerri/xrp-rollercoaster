@@ -7,11 +7,19 @@ import { cryptoHistory } from '../services/apiService';
 import { getHistoricalData } from '../services/cryptoCompareService';
 import { TimeUnits } from '../consts/TimeUnits';
 import { CurrencyCodes } from '../consts/CurrencyCodes';
+import Footer from 'rc-footer';
 
 const Container = styled.div`
   padding-right: 15px;
   padding-left: 15px;
   padding-top: 2rem;
+  text-align: center;
+`;
+const ChartContainer = styled.div`
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-top: 2rem;
+  padding-bottom: 10rem;
   text-align: center;
 `;
 
@@ -73,7 +81,7 @@ const Home = ({ initialHistData }) => {
   }, []);
 
   return (
-    <Container>
+    <>
       <Head>
         <title>XRP Rollercoaster</title>
         <link rel='icon' href='/favicon.png' />
@@ -81,14 +89,74 @@ const Home = ({ initialHistData }) => {
       </Head>
 
       <main>
-        <ImageContainer>
-          <RotatedImage src='/xrp-rollercoaster.gif' alt='xrp rollercoaster' rotation={calculateRotation(histData)} />
-        </ImageContainer>
         <Container>
-          <CryptoChart histData={histData} updateData={updateHistoricalData} />
+          <ImageContainer>
+            <RotatedImage src='/xrp-rollercoaster.gif' alt='xrp rollercoaster' rotation={calculateRotation(histData)} />
+          </ImageContainer>
+          <ChartContainer>
+            <CryptoChart histData={histData} updateData={updateHistoricalData} />
+          </ChartContainer>
         </Container>
+        <Footer
+          className='override-rc-footer'
+          columns={[
+            {
+              className: 'override-rc-footer-column',
+              title: 'CONTACT',
+              items: [
+                {
+                  title: 'BlobWare42@gmail.com',
+                  url: 'mailto:BlobWare42@gmail.com',
+                  openExternal: true,
+                },
+                {
+                  title: 'PM BoyAndHisBlob on Reddit',
+                  url: 'https://www.reddit.com/message/compose/?to=BoyAndHisBlob',
+                  openExternal: true,
+                },
+              ],
+            },
+            {
+              className: 'override-rc-footer-column',
+              title: 'SUPPORT',
+              items: [
+                {
+                  title: 'Tip in crypto',
+                  url: 'https://blobware-tips.firebaseapp.com/',
+                  openExternal: true,
+                },
+                {
+                  title: 'Web Monetized with Coil',
+                  url: 'https://coil.com/explore',
+                  openExternal: true,
+                },
+              ],
+            },
+            {
+              className: 'override-rc-footer-column',
+              title: 'PROJECTS',
+              items: [
+                {
+                  title: 'GitHub',
+                  url: 'https://github.com/jjmerri',
+                  openExternal: true,
+                },
+                {
+                  title: 'Dropchat',
+                  url: 'https://chrome.google.com/webstore/detail/dropchat/eaejhpdjaoedfbbnajilifkhdngdgbno?hl=en-US',
+                  openExternal: true,
+                },
+              ],
+            },
+          ]}
+          bottom={
+            <a style={{ color: '#808080' }} href='https://github.com/jjmerri/xrp-rollercoaster' target='_blank'>
+              xrprollercoaster.com source
+            </a>
+          }
+        />
       </main>
-    </Container>
+    </>
   );
 };
 

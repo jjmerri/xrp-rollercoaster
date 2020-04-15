@@ -36,3 +36,18 @@
 .select-css option {
 	font-weight:normal;
 }
+
+.override-rc-footer-column h2 {
+	color:#808080;
+	font-weight: bold;
+}
+
+.override-rc-footer-column a {
+	color:#808080
+}
+
+.override-rc-footer {
+	background-image: linear-gradient(to bottom, #00001c 0%,#12122f 100%);
+    background-position: right .7em top 50%, 0 0;
+    background-size: .95em auto, 100%;
+}
