@@ -14,7 +14,7 @@ const Container = styled.div`
   padding-left: 15px;
   padding-top: 2rem;
   text-align: center;
-  min-height: 100vh;
+  min-height: calc(100vh - 32px);
 `;
 const ChartContainer = styled.div`
   padding-right: 15px;
