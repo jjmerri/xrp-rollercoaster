@@ -37,13 +37,20 @@
 	font-weight:normal;
 }
 
+.rc-footer-container {
+	padding: 20px 0 0 0;
+}
+
 .override-rc-footer-column h2 {
 	color:#808080;
 	font-weight: bold;
 }
 
 .override-rc-footer-column a {
-	color:#808080
+	color:#808080;
+}
+.override-rc-footer-column {
+	margin-bottom: 20px;
 }
 
 .override-rc-footer {
@@ -51,3 +58,14 @@
     background-position: right .7em top 50%, 0 0;
     background-size: .95em auto, 100%;
 }
+
+.full-screen-background-image {
+	z-index: -999;
+	min-height: 100%;
+	min-width: 1024px;
+	width: 100%;
+	height: auto;
+	position: fixed;
+	top: 0;
+	left: 0;
+  }

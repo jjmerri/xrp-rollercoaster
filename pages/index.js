@@ -14,6 +14,7 @@ const Container = styled.div`
   padding-left: 15px;
   padding-top: 2rem;
   text-align: center;
+  min-height: 100vh;
 `;
 const ChartContainer = styled.div`
   padding-right: 15px;
@@ -23,8 +24,11 @@ const ChartContainer = styled.div`
   text-align: center;
 `;
 
-const ImageContainer = styled(Container)`
-  padding-bottom: 3rem;
+const ImageContainer = styled.div`
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-top: 2rem;
+  text-align: center;
 `;
 
 const RotatedImage = styled.img`
@@ -65,12 +69,7 @@ const Home = ({ initialHistData }) => {
   const [histData, setHistData] = useState(initialHistData);
 
   useEffect(() => {
-    document.body.style.margin = 0;
-    document.body.style.backgroundImage = 'url("background.jpg")';
-    document.body.style.backgroundRepeat = 'no-repeat';
-    document.body.style.backgroundAttachment = 'fixed';
-    document.body.style.backgroundSize = 'cover';
-    document.body.style.backgroundPosition = 'center';
+    document.body.style.margin = '0';
 
     ReactGA.initialize('UA-163121450-1');
     ReactGA.pageview(window.location.pathname + window.location.search);
@@ -89,6 +88,7 @@ const Home = ({ initialHistData }) => {
       </Head>
 
       <main>
+        <img alt='starry background image' src='background.jpg' className='full-screen-background-image' />
         <Container>
           <ImageContainer>
             <RotatedImage src='/xrp-rollercoaster.gif' alt='xrp rollercoaster' rotation={calculateRotation(histData)} />
