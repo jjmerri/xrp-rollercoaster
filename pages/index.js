@@ -28,6 +28,7 @@ const ImageContainer = styled.div`
   padding-right: 15px;
   padding-left: 15px;
   padding-top: 2rem;
+  padding-bottom: 3rem;
   text-align: center;
 `;
 
