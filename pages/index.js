@@ -85,7 +85,7 @@ const Home = ({ initialHistData }) => {
       <Head>
         <title>XRP Rollercoaster</title>
         <link rel='icon' href='/favicon.png' />
-        <meta name='monetization' content='$ilp.uphold.com/MLmWKGEgJR82' />>
+        <meta name='monetization' content='$ilp.uphold.com/MLmWKGEgJR82' />
       </Head>
 
       <main>
