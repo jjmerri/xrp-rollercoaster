@@ -72,7 +72,7 @@ const CryptoChart = ({ histData, updateData }) => {
     } else {
       setInitialLoad(false);
     }
-  }, [currency, timeUnits]);
+  }, [currency, initialLoad, timeUnits, updateData]);
 
   const handleCurrencyChange = async (e) => {
     setCurrency(e.target.value);
