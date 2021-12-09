@@ -8,6 +8,7 @@ import { getHistoricalData } from '../services/cryptoCompareService';
 import { TimeUnits } from '../consts/TimeUnits';
 import { CurrencyCodes } from '../consts/CurrencyCodes';
 import Footer from 'rc-footer';
+import Image from 'next/image';
 
 const Container = styled.div`
   padding-right: 15px;
@@ -89,7 +90,7 @@ const Home = ({ initialHistData }) => {
       </Head>
 
       <main>
-        <img alt='starry background image' src='background.jpg' className='full-screen-background-image' />
+        <Image alt='starry background image' src='background.jpg' className='full-screen-background-image' />
         <Container>
           <ImageContainer>
             <RotatedImage src='/xrp-rollercoaster.gif' alt='xrp rollercoaster' rotation={calculateRotation(histData)} />
@@ -151,7 +152,11 @@ const Home = ({ initialHistData }) => {
             },
           ]}
           bottom={
-            <a style={{ color: '#808080' }} href='https://github.com/jjmerri/xrp-rollercoaster' target='_blank'>
+            <a
+              style={{ color: '#808080' }}
+              href='https://github.com/jjmerri/xrp-rollercoaster'
+              target='_blank'
+              rel='noreferrer'>
               xrprollercoaster.com source
             </a>
           }
